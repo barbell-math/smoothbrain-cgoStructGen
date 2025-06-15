@@ -15,6 +15,9 @@ func main() {
 		GenericGenerateTarget: true,
 	})
 	sbbs.RegisterMergegateTarget(sbbs.MergegateTargets{
+		PreStages: []sbbs.StageFunc{
+			sbbs.TargetAsStage("goenumInstall"),
+		},
 		CheckDepsUpdated:     true,
 		CheckReadmeGomarkdoc: true,
 		CheckFmt:             true,

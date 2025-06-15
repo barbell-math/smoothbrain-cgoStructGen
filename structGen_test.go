@@ -2,180 +2,399 @@ package sbcgostructgen
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"unsafe"
 
 	sbtest "github.com/barbell-math/smoothbrain-test"
 )
 
-func TestCheckTypeNonStruct(t *testing.T) {
-	err := GenerateFor[int]("", &Opts{ExitOnErr: false, DryRun: true})
+func TestGenerateForNonStruct(t *testing.T) {
+	err := GenerateFor[int](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithMap(t *testing.T) {
-	err := GenerateFor[struct{ f1 map[int]int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithMap(t *testing.T) {
+	type s1 struct{ f1 map[int]int }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithChan(t *testing.T) {
-	err := GenerateFor[struct{ f1 chan int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
-	sbtest.ContainsError(t, InvalidTypeErr, err)
-	err = GenerateFor[struct{ f1 <-chan int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
-	sbtest.ContainsError(t, InvalidTypeErr, err)
-	err = GenerateFor[struct{ f1 chan<- int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithSlice(t *testing.T) {
+	type s1 struct{ f1 []int32 }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithFunc(t *testing.T) {
-	err := GenerateFor[struct{ f1 func() }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithChan(t *testing.T) {
+	type s1 struct{ f1 chan int }
+	err := GenerateFor[s1](New())
+	sbtest.ContainsError(t, InvalidTypeErr, err)
+
+	type s2 struct{ f1 <-chan int }
+	err = GenerateFor[s2](New())
+	sbtest.ContainsError(t, InvalidTypeErr, err)
+
+	type s3 struct{ f1 chan<- int }
+	err = GenerateFor[s3](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithInterface(t *testing.T) {
-	err := GenerateFor[struct{ f1 fmt.Stringer }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithFunc(t *testing.T) {
+	type s1 struct{ f1 func() }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithComplex64(t *testing.T) {
-	err := GenerateFor[struct{ f1 complex64 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithInterface(t *testing.T) {
+	type s1 struct{ f1 fmt.Stringer }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithComplex128(t *testing.T) {
-	err := GenerateFor[struct{ f1 complex128 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithComplex64(t *testing.T) {
+	type s1 struct{ f1 complex64 }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
 }
 
-func TestCheckTypeStructWithInt(t *testing.T) {
-	err := GenerateFor[struct{ f1 int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithComplex128(t *testing.T) {
+	type s1 struct{ f1 complex128 }
+	err := GenerateFor[s1](New())
+	sbtest.ContainsError(t, InvalidTypeErr, err)
+}
+
+func TestGenerateForStructWithInt(t *testing.T) {
+	type s1 struct{ f1 int }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, UnderspecifiedTypeErr, err)
 }
 
-func TestCheckTypeStructWithUint(t *testing.T) {
-	err := GenerateFor[struct{ f1 uint }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithUint(t *testing.T) {
+	type s1 struct{ f1 uint }
+	err := GenerateFor[s1](New())
 	sbtest.ContainsError(t, UnderspecifiedTypeErr, err)
 }
 
-func TestCheckTypeStructWithUintptr(t *testing.T) {
-	err := GenerateFor[struct{ f1 uintptr }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithUintptr(t *testing.T) {
+	type s1 struct{ f1 uintptr }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithUnsafePointer(t *testing.T) {
-	err := GenerateFor[struct{ f1 unsafe.Pointer }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithUnsafePointer(t *testing.T) {
+	type s1 struct{ f1 unsafe.Pointer }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithInts(t *testing.T) {
-	err := GenerateFor[struct{ f1 int8 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithInts(t *testing.T) {
+	type s1 struct{ f1 int8 }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 int16 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s2 struct{ f1 int16 }
+	err = GenerateFor[s2](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 int32 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s3 struct{ f1 int32 }
+	err = GenerateFor[s3](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 int64 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s4 struct{ f1 int64 }
+	err = GenerateFor[s4](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithUints(t *testing.T) {
-	err := GenerateFor[struct{ f1 uint8 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithUints(t *testing.T) {
+	type s1 struct{ f1 uint8 }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 uint16 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s2 struct{ f1 uint16 }
+	err = GenerateFor[s2](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 uint32 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s3 struct{ f1 uint32 }
+	err = GenerateFor[s3](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 uint64 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s4 struct{ f1 uint64 }
+	err = GenerateFor[s4](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithBool(t *testing.T) {
-	err := GenerateFor[struct{ f1 bool }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithBool(t *testing.T) {
+	type s1 struct{ f1 bool }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithString(t *testing.T) {
-	err := GenerateFor[struct{ f1 string }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithString(t *testing.T) {
+	type s1 struct{ f1 string }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
 }
 
-func TestCheckTypeStructWithArray(t *testing.T) {
-	err := GenerateFor[struct{ f1 [1]int32 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructWithArray(t *testing.T) {
+	type s1 struct{ f1 [1]int32 }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 [1]int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s2 struct{ f1 [1]int }
+	err = GenerateFor[s2](New())
 	sbtest.ContainsError(t, UnderspecifiedTypeErr, err)
 }
 
-func TestCheckTypeStructWithSlice(t *testing.T) {
-	err := GenerateFor[struct{ f1 []int32 }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+func TestGenerateForStructOfStruct(t *testing.T) {
+	type s2 struct{ f2 int32 }
+	type s1 struct{ f1 s2 }
+	err := GenerateFor[s1](New())
 	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 []int }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
-	sbtest.ContainsError(t, UnderspecifiedTypeErr, err)
-}
 
-func TestCheckTypeStructOfStruct(t *testing.T) {
-	err := GenerateFor[struct{ f1 struct{ f2 int32 } }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
-	sbtest.Nil(t, err)
-	err = GenerateFor[struct{ f1 struct{ f2 int } }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+	type s4 struct{ f2 int }
+	type s3 struct{ f1 s4 }
+	err = GenerateFor[s3](New())
 	sbtest.ContainsError(t, UnderspecifiedTypeErr, err)
-	err = GenerateFor[struct{ f1 struct{ f2 map[int32]int32 } }]("", &Opts{
-		ExitOnErr: false, DryRun: true,
-	})
+
+	type s6 struct{ f2 map[int32]int32 }
+	type s5 struct{ f1 s6 }
+	err = GenerateFor[s5](New())
 	sbtest.ContainsError(t, InvalidTypeErr, err)
+}
+
+func TestGenerateForEmbededField(t *testing.T) {
+	type s2 struct{ f2 int32 }
+	type s1 struct{ s2 }
+	err := GenerateFor[s1](New())
+	sbtest.Nil(t, err)
+}
+
+func TestGenerateForSimpleStruct(t *testing.T) {
+	type s1 struct{ f1 int8 }
+	res := New()
+	err := GenerateFor[s1](res)
+	sbtest.Nil(t, err)
+	sbtest.MapsMatch(
+		t,
+		map[include]struct{}{"<stdint.h>": {}},
+		res.includes,
+	)
+	sbtest.Eq(t, 1, len(res.structs))
+	sbtest.SlicesMatch(t, res.structs["s1"],
+		[]structField{
+			{
+				typeModifier: typeModifier{typeMod: TypeModNone, tModAmnt: 0},
+				_type:        "int8_t",
+				name:         "f1",
+			},
+		},
+	)
+}
+
+func TestWriteSingleStructOneField(t *testing.T) {
+	type s1 struct{ f1 int8 }
+	res := New()
+	err := GenerateFor[s1](res)
+	sbtest.Nil(t, err)
+	err = res.WriteTo("./bs/testData/simpleStruct.h", "HEADER_GUARD")
+	sbtest.Nil(t, err)
+
+	data, err := os.ReadFile("./bs/testData/simpleStruct.h")
+	sbtest.Nil(t, err)
+	exp := `#ifndef HEADER_GUARD
+#define HEADER_GUARD
+
+// File generated by cgoStructGen - DO NOT EDIT
+// Struct definitions generated for C from Go struct definitions
+
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	typedef struct s1{
+		int8_t f1;
+	} s1_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+`
+	sbtest.Eq(t, string(data), exp)
+}
+
+func TestWriteSingleStructMultipleFields(t *testing.T) {
+	type s1 struct {
+		f1 int8
+		f2 uint8
+		f3 float32
+		f4 float64
+		f5 bool
+		f6 string
+	}
+	res := New()
+	err := GenerateFor[s1](res)
+	sbtest.Nil(t, err)
+	err = res.WriteTo("./bs/testData/simpleStruct.h", "HEADER_GUARD")
+	sbtest.Nil(t, err)
+
+	data, err := os.ReadFile("./bs/testData/simpleStruct.h")
+	sbtest.Nil(t, err)
+	exp := `#ifndef HEADER_GUARD
+#define HEADER_GUARD
+
+// File generated by cgoStructGen - DO NOT EDIT
+// Struct definitions generated for C from Go struct definitions
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	typedef struct s1{
+		int8_t f1;
+		uint8_t f2;
+		float f3;
+		double f4;
+		bool f5;
+		char* f6;
+	} s1_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+`
+	sbtest.Eq(t, string(data), exp)
+}
+
+func TestWriteMultipleStructsMultipleFields(t *testing.T) {
+	type s1 struct {
+		f1 int8
+		f2 uint8
+		f3 float32
+		f4 float64
+		f5 bool
+		f6 string
+	}
+	type s2 struct {
+		f7 [5]uint32
+		f8 *int32
+	}
+	res := New()
+	err := GenerateFor[s1](res)
+	sbtest.Nil(t, err)
+	err = GenerateFor[s2](res)
+	sbtest.Nil(t, err)
+	err = res.WriteTo("./bs/testData/simpleStruct.h", "HEADER_GUARD")
+	sbtest.Nil(t, err)
+
+	data, err := os.ReadFile("./bs/testData/simpleStruct.h")
+	sbtest.Nil(t, err)
+	exp := `#ifndef HEADER_GUARD
+#define HEADER_GUARD
+
+// File generated by cgoStructGen - DO NOT EDIT
+// Struct definitions generated for C from Go struct definitions
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	typedef struct s1{
+		int8_t f1;
+		uint8_t f2;
+		float f3;
+		double f4;
+		bool f5;
+		char* f6;
+	} s1_t;
+
+	typedef struct s2{
+		uint32_t f7[5];
+		int32_t* f8;
+	} s2_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+`
+	sbtest.Eq(t, string(data), exp)
+}
+
+func TestWriteMultipleStructsReferencingEachOther(t *testing.T) {
+	type s1 struct {
+		f1 int8
+		f2 uint8
+		f3 float32
+		f4 float64
+		f5 bool
+		f6 string
+	}
+	type s2 struct {
+		f7  [5]uint32
+		f8  *int32
+		f9  s1
+		f10 [10]s1
+		f11 *s1
+	}
+	res := New()
+	err := GenerateFor[s1](res)
+	sbtest.Nil(t, err)
+	err = GenerateFor[s2](res)
+	sbtest.Nil(t, err)
+	err = res.WriteTo("./bs/testData/simpleStruct.h", "HEADER_GUARD")
+	sbtest.Nil(t, err)
+
+	data, err := os.ReadFile("./bs/testData/simpleStruct.h")
+	sbtest.Nil(t, err)
+	exp := `#ifndef HEADER_GUARD
+#define HEADER_GUARD
+
+// File generated by cgoStructGen - DO NOT EDIT
+// Struct definitions generated for C from Go struct definitions
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	typedef struct s1{
+		int8_t f1;
+		uint8_t f2;
+		float f3;
+		double f4;
+		bool f5;
+		char* f6;
+	} s1_t;
+
+	typedef struct s2{
+		uint32_t f7[5];
+		int32_t* f8;
+		s1_t f9;
+		s1_t f10[10];
+		s1_t* f11;
+	} s2_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+`
+	sbtest.Eq(t, string(data), exp)
 }
