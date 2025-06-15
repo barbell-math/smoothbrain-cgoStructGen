@@ -1,4 +1,4 @@
-module github.com/barbell-math/smoothbrain-cgostructgen
+module github.com/barbell-math/smoothbrain-sbcgostructgen
 
 go 1.24.1
 
