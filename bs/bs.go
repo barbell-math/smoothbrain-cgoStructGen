@@ -8,6 +8,7 @@ func main() {
 	sbbs.RegisterBsBuildTarget()
 	sbbs.RegisterUpdateDepsTarget()
 	sbbs.RegisterGoMarkDocTargets()
+	sbbs.RegisterGoEnumTargets()
 	sbbs.RegisterCommonGoCmdTargets(sbbs.GoTargets{
 		GenericTestTarget:     true,
 		GenericBenchTarget:    true,
