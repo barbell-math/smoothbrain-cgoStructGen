@@ -5,7 +5,7 @@
 # sbcgostructgen
 
 ```go
-import "github.com/barbell-math/smoothbrain-mat"
+import "github.com/barbell-math/smoothbrain-cgostructgen"
 ```
 
 A very simple library that is used to generate struct definitions shared between Go and C through CGO.
