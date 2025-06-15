@@ -11,21 +11,21 @@
 extern "C" {
 #endif
 
-	typedef struct s1{
+	typedef struct foo{
 		int8_t f1;
 		uint8_t f2;
 		float f3;
 		double f4;
 		bool f5;
 		char* f6;
-	} s1_t;
+	} foo_t;
 
 	typedef struct s2{
 		uint32_t f7[5];
 		int32_t* f8;
-		s1_t f9;
-		s1_t f10[10];
-		s1_t* f11;
+		foo_t f9;
+		foo_t f10[10];
+		foo_t* f11;
 	} s2_t;
 
 #ifdef __cplusplus
