@@ -156,9 +156,6 @@ func GenerateFor[T any](ts *CGoStructGen) error {
 	)
 
 errExit:
-	if err != nil {
-		fmt.Println("ERROR:", err)
-	}
 	return err
 }
 
@@ -183,7 +180,7 @@ func checkType(
 		)
 	case reflect.UnsafePointer, reflect.Uintptr:
 		fmt.Printf(
-			"Cannot validate kind of %s, will be specified in C as a void*, field %s\n",
+			"WARN: Cannot validate kind of %s, will be specified in C as a void*, field %s\n",
 			refType.Kind(), fieldName,
 		)
 	case reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
@@ -314,9 +311,6 @@ func (t *CGoStructGen) WriteTo(file string, headerStr string) error {
 	t.templateFooter(f)
 
 errExit:
-	if err != nil {
-		fmt.Println("ERROR:", err)
-	}
 	return err
 }
 
