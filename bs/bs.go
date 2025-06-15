@@ -9,9 +9,10 @@ func main() {
 	sbbs.RegisterUpdateDepsTarget()
 	sbbs.RegisterGoMarkDocTargets()
 	sbbs.RegisterCommonGoCmdTargets(sbbs.GoTargets{
-		GenericTestTarget:  true,
-		GenericBenchTarget: true,
-		GenericFmtTarget:   true,
+		GenericTestTarget:     true,
+		GenericBenchTarget:    true,
+		GenericFmtTarget:      true,
+		GenericGenerateTarget: true,
 	})
 	sbbs.RegisterMergegateTarget(sbbs.MergegateTargets{
 		CheckDepsUpdated:     true,
