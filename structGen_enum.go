@@ -32,10 +32,10 @@ const (
 	FieldTypeUint32T fieldType = "uint32_t"
 	// FieldTypeUint64T is a fieldType of type uint64_t.
 	FieldTypeUint64T fieldType = "uint64_t"
-	// FieldTypeFloat is a fieldType of type float.
-	FieldTypeFloat fieldType = "float"
-	// FieldTypeDouble is a fieldType of type double.
-	FieldTypeDouble fieldType = "double"
+	// FieldTypeFloatT is a fieldType of type float_t.
+	FieldTypeFloatT fieldType = "float_t"
+	// FieldTypeDoubleT is a fieldType of type double_t.
+	FieldTypeDoubleT fieldType = "double_t"
 	// FieldTypeBool is a fieldType of type bool.
 	FieldTypeBool fieldType = "bool"
 )
@@ -53,8 +53,8 @@ var _fieldTypeNames = []string{
 	string(FieldTypeUint16T),
 	string(FieldTypeUint32T),
 	string(FieldTypeUint64T),
-	string(FieldTypeFloat),
-	string(FieldTypeDouble),
+	string(FieldTypeFloatT),
+	string(FieldTypeDoubleT),
 	string(FieldTypeBool),
 }
 
@@ -78,8 +78,8 @@ func fieldTypeValues() []fieldType {
 		FieldTypeUint16T,
 		FieldTypeUint32T,
 		FieldTypeUint64T,
-		FieldTypeFloat,
-		FieldTypeDouble,
+		FieldTypeFloatT,
+		FieldTypeDoubleT,
 		FieldTypeBool,
 	}
 }
@@ -107,8 +107,8 @@ var _fieldTypeValue = map[string]fieldType{
 	"uint16_t": FieldTypeUint16T,
 	"uint32_t": FieldTypeUint32T,
 	"uint64_t": FieldTypeUint64T,
-	"float":    FieldTypeFloat,
-	"double":   FieldTypeDouble,
+	"float_t":  FieldTypeFloatT,
+	"double_t": FieldTypeDoubleT,
 	"bool":     FieldTypeBool,
 }
 

@@ -28,8 +28,8 @@ type (
 	//  uint16_t,
 	//  uint32_t,
 	//  uint64_t,
-	//	float,
-	//	double,
+	//	float_t,
+	//	double_t,
 	//	bool,
 	// )
 	fieldType string
@@ -87,8 +87,8 @@ var (
 		reflect.Uint16:        FieldTypeUint16T,
 		reflect.Uint32:        FieldTypeUint32T,
 		reflect.Uint64:        FieldTypeUint64T,
-		reflect.Float32:       FieldTypeFloat,
-		reflect.Float64:       FieldTypeDouble,
+		reflect.Float32:       FieldTypeFloatT,
+		reflect.Float64:       FieldTypeDoubleT,
 		reflect.Bool:          FieldTypeBool,
 		reflect.String:        FieldTypeChar,
 	}
@@ -102,8 +102,8 @@ var (
 		reflect.Uint16:  "<stdint.h>",
 		reflect.Uint32:  "<stdint.h>",
 		reflect.Uint64:  "<stdint.h>",
-		reflect.Float32: "<stdint.h>",
-		reflect.Float64: "<stdint.h>",
+		reflect.Float32: "<math.h>",
+		reflect.Float64: "<math.h>",
 		reflect.Bool:    "<stdbool.h>",
 	}
 )
