@@ -85,7 +85,7 @@ func New() *CGoStructGen
 Creates a new struct generator.
 
 <a name="CGoStructGen.WriteTo"></a>
-### func \(\*CGoStructGen\) [WriteTo](<https://github.com/barbell-math/smoothbrain-cgoStructGen/blob/main/structGen.go#L299>)
+### func \(\*CGoStructGen\) [WriteTo](<https://github.com/barbell-math/smoothbrain-cgoStructGen/blob/main/structGen.go#L296>)
 
 ```go
 func (t *CGoStructGen) WriteTo(file string, headerStr string) error
