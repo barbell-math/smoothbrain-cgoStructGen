@@ -9,20 +9,19 @@ func main() {
 	sbbs.RegisterUpdateDepsTarget()
 	sbbs.RegisterGoMarkDocTargets()
 	sbbs.RegisterGoEnumTargets()
-	sbbs.RegisterCommonGoCmdTargets(sbbs.GoTargets{
-		GenericTestTarget:     true,
-		GenericBenchTarget:    true,
-		GenericFmtTarget:      true,
-		GenericGenerateTarget: true,
-	})
+	sbbs.RegisterCommonGoCmdTargets(sbbs.NewGoTargets().
+		DefaultFmtTarget().
+		DefaultGenerateTarget().
+		DefaultTestTarget(),
+	)
 	sbbs.RegisterMergegateTarget(sbbs.MergegateTargets{
 		PreStages: []sbbs.StageFunc{
 			sbbs.TargetAsStage("goenumInstall"),
 		},
 		CheckDepsUpdated:     true,
 		CheckReadmeGomarkdoc: true,
-		CheckFmt:             true,
-		CheckUnitTests:       true,
+		FmtTarget:            sbbs.DefaultFmtTargetName,
+		TestTarget:           sbbs.DefaultFmtTargetName,
 	})
 	sbbs.Main("bs")
 }
